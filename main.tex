@@ -1,0 +1,49 @@
+%----------------------------------------------------------%
+
+%% Global stuff
+\documentclass[openany,regno,a4paper,12pt]{amsart}
+\input{header.tex}
+
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+%% Consider changing the name of this to something more specific
+\bibliography{main.bib}
+
+%----------------------------------------------------------%
+
+%% Document specific definitions
+
+%% Comments
+\newcommand{\lawrence}[1]{\textcolor{green}{\textbf{[#1]}}}
+
+%----------------------------------------------------------%
+
+\begin{document}
+
+\title{Title}
+
+\author{Lawrence Hollom}
+\address{Department of Pure Mathematics and Mathematical Statistics (DPMMS), University of Cambridge, Wilberforce Road, Cambridge, CB3 0WA, United Kingdom}
+\email{lh569@cam.ac.uk}
+
+%\keywords{Combinatorics, Mathematics.}
+
+%\thanks{Put current funding information here.}
+
+\begin{abstract}
+  This is a paper which I wrote with my hands.
+\end{abstract}
+
+\maketitle
+
+%----------------------------------------------------------%
+
+\section{Introduction}
+\label{sec:intro}
+
+%----------------------------------------------------------%
+
+\printbibliography
+
+%----------------------------------------------------------%
+
+\end{document}

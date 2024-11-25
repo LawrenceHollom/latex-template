@@ -7,3 +7,33 @@
 
 % Labels (only show them in dark mode so they don't get accidentally printed anywhere)
 \usepackage{showlabels}
+
+% Highlight todos and things to be checked, with counters
+
+\newcounter{todocounter}
+\setcounter{todocounter}{1}
+\newcommand{\todo}{
+    \textbf{\textit{\textcolor{magenta}{
+        [[[[\thetodocounter. TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO]]]]
+    }}}
+    \stepcounter{todocounter}}
+\newcommand{\howmuchtodo}{
+    \addtocounter{todocounter}{-1}
+    \textbf{\textit{\textcolor{magenta}{
+        [Here's how much more todo there is to do: \thetodocounter]
+    }}}
+    \addtocounter{todocounter}{1}}
+
+\newcounter{checkcounter}
+\setcounter{checkcounter}{1}
+\newcommand{\unchecked}{
+    \textbf{\textit{\textcolor{green}{
+        [[ \thecheckcounter. UNCHECKED! ]]
+    }}}
+    \stepcounter{checkcounter}}
+\newcommand{\howmuchtocheck}{
+    \addtocounter{checkcounter}{-1}
+    \textbf{\textit{\textcolor{green}{
+        [Here's how many proofs there are still to check: \thecheckcounter]
+    }}}
+    \addtocounter{checkcounter}{1}}

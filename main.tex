@@ -1,7 +1,7 @@
 %----------------------------------------------------------%
 
 %% Global stuff
-\documentclass[openany,reqno,a4paper,12pt]{amsart}
+\documentclass[reqno,a4paper,11pt]{article}
 \input{header.tex}
 
 % Margins
@@ -11,6 +11,17 @@
     right=30mm,
     bottom=35mm,
 }
+
+% More margin shenanigans
+\usepackage{scrextend}
+
+% Messing around with section headings
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+
+\titleformat{\section}{\centering\bfseries\scshape\Large}{\thesection}{1em}{}
+\titleformat{\subsection}{\bfseries\scshape\large}{\thesubsection}{1em}{}
+\renewcommand{\abstractname}{\scshape Abstract}
 
 %----------------------------------------------------------%
 
@@ -24,15 +35,11 @@
 
 \begin{document}
 
-\title{Title}
+\title{\textsc{\bfseries Title}}
 
-\author{Lawrence Hollom}
-\address{Department of Pure Mathematics and Mathematical Statistics (DPMMS), University of Cambridge, Wilberforce Road, Cambridge, CB3 0WA, United Kingdom}
-\email{lh569@cam.ac.uk}
+\author{\textsc{Lawrence Hollom}\footnote{\href{mailto:lh569@cam.ac.uk}{lh569@cam.ac.uk}, Department of Pure Mathematics and Mathematical Statistics (DPMMS), University of Cambridge, Wilberforce Road, Cambridge, CB3 0WA, United Kingdom}}
 
-%\keywords{Combinatorics, Mathematics.}
-
-%\thanks{Put current funding information here.}
+\date{}
 
 \begin{abstract}
   This is a paper which I wrote with my hands.

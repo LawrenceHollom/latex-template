@@ -151,12 +151,18 @@
 % From (i.e. $f \from X \to Y$ gives "f : X -> Y")
 \newcommand{\from}{\colon}
 
+% Image
+\newcommand{\im}{\text{im}}
+
 % Floor and ceil
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 
 % Expectation, e.g. $\expects_{x \in G} f(x)$
 \DeclareMathOperator*{\expecs}{\scalerel*{\mathbb{E}}{A_B}}
+
+% Setminus a singleton
+\newcommand{\setm}[1]{\setminus\set{#1}}
 
 %----------------------------------------------------------%
 
@@ -193,6 +199,9 @@
 % Inner Product
 \DeclarePairedDelimiterX{\inner}[2]
   {\langle}{\rangle}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
+
+\DeclarePairedDelimiterX{\absinner}[2]
+  {|\langle}{\rangle|}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
 
 % Embedding hook
 \DeclareMathOperator{\embeds}{\hookrightarrow}
@@ -419,18 +428,21 @@
 \newcommand{\bfz}{\mathbf{z}}
 \newcommand{\bfell}{\boldsymbol{\ell}}
 
-\newcommand{\ga}{\alpha}
-\newcommand{\gb}{\beta}
-\newcommand{\gd}{\delta}
-\newcommand{\gz}{\zeta}
-\newcommand{\gn}{\eta}
-\newcommand{\gt}{\theta}
-\newcommand{\gi}{\iota}
-\newcommand{\gk}{\kappa}
-\newcommand{\gl}{\lambda}
-\newcommand{\gs}{\sigma}
-\newcommand{\gu}{\upsilon}
-\newcommand{\gw}{\omega}
+\let\aa\relax
+\newcommand{\aa}{\alpha}
+\newcommand{\bb}{\beta}
+\newcommand{\dd}{\delta}
+\newcommand{\zz}{\zeta}
+\newcommand{\nn}{\eta}
+\let\tt\relax
+\newcommand{\tt}{\theta}
+\newcommand{\kk}{\kappa}
+\let\ll\relax
+\newcommand{\ll}{\lambda}
+\let\ss\relax
+\newcommand{\ss}{\sigma}
+\newcommand{\phh}{\varphi}
+\newcommand{\ww}{\omega}
 
 \newcommand{\bfGamma}{\mathbf{\Gamma}}
 \newcommand{\bfDelta}{\mathbf{\Delta}}

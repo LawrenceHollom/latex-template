@@ -1,0 +1,67 @@
+%----------------------------------------------------------%
+
+%% Global stuff
+\documentclass[reqno,a4paper,11pt]{article}
+\input{header.tex}
+
+% Margins
+\usepackage{geometry}
+\geometry{
+    left=30mm,
+    right=30mm,
+    bottom=35mm,
+}
+
+% More margin shenanigans
+\usepackage{scrextend}
+
+% Messing around with section headings
+\usepackage[T1]{fontenc}
+\usepackage{titlesec}
+
+\titleformat{\section}{\centering\bfseries\scshape\Large}{\thesection}{1em}{}
+\titleformat{\subsection}{\bfseries\scshape\large}{\thesubsection}{1em}{}
+\renewcommand{\abstractname}{\scshape Abstract}
+
+%----------------------------------------------------------%
+
+%% Document specific definitions
+
+%% Comments
+\newcommand{\lhc}[1]{\textcolor{blue}{[~\textbf{Lawrence}: #1~]}}
+\newcommand{\lh}[1]{\textcolor{blue}{#1}}
+
+%----------------------------------------------------------%
+
+\begin{document}
+
+\title{\textsc{\bfseries PAPER TITLE -- revision notes}}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\author{\textsc{Lawrence Hollom}\footnotemark[1]}
+
+\footnotetext[1]{\href{mailto:lh569@cam.ac.uk}{lh569@cam.ac.uk}. Department of Pure Mathematics and Mathematical Statistics (DPMMS), University of Cambridge, Wilberforce Road, Cambridge, CB3 0WA, United Kingdom.}
+
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+\maketitle
+
+\date{}
+
+%----------------------------------------------------------%
+
+I would like to thank the referees for their thorough reading of the paper and many valuable comments.
+I have replied to all comments and implemented the suggested changes, which have improved the clarity, rigour, and presentation of the paper.
+
+This document contains itemised replies to the points raised by the referees, and the changes to the paper can also be viewed in the form of a diff file (red underlined parts have been removed, blue underlined parts have been added), which has been sent along with the updated article itself.
+
+% The two reports have been arbitrarily labelled as report 1 and report 2.
+
+\section*{Report 1}
+
+
+\section*{Report 2}
+
+
+\end{document}

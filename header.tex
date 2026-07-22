@@ -1,8 +1,6 @@
 %----------------------------------------------------------%
 % HEADER FOR MATHEMATICAL LATEX DOCUMENTS
 % LAWRENCE HOLLOM
-% Credit to Victor Souza, whose LaTeX template this is
-% heavily inspired by.
 %----------------------------------------------------------%
 
 %% General AMS packages
@@ -27,7 +25,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=red,
-    citecolor=blue,
+    citecolor=cyan,
 }
 
 %% Always use \Cref or \cref instead of \ref for references
@@ -53,69 +51,225 @@
 \linespread{1.07}
 
 %----------------------------------------------------------%
+%% Pretty stuff for a pretty paper.
 
-%% Theorem types
+\usepackage{xcolor}
+\usepackage[framemethod=default]{mdframed}
+\usepackage{marginnote}
+\usepackage{environ} 
+\usepackage{geometry}
 
-\ifdefined\thmcolor
-\declaretheoremstyle[
-  shaded={bgcolor=\thmcolor}
-]{plain}
+\makeatletter
+
+% TOGGLES for boxes, proof bars, and rambling
+
+\newif\ifthmboxes
+\thmboxestrue
+% \thmboxesfalse
+
+\newif\ifproofbar
+\proofbartrue
+% \proofbarfalse
+
+\newif\iframbling
+\ramblingtrue
+% \ramblingfalse
+
+\colorlet{clr@theorem}{red}
+\colorlet{clr@proposition}{red}
+\colorlet{clr@lemma}{red}
+\colorlet{clr@corollary}{red}
+\colorlet{clr@claim}{red}
+\colorlet{clr@fact}{red}
+\colorlet{clr@observation}{red} 
+
+\colorlet{clr@question}{magenta}
+\colorlet{clr@conjecture}{magenta}
+\colorlet{clr@openproblem}{magenta}
+
+\colorlet{clr@definition}{green}
+\colorlet{clr@construction}{green}
+
+\colorlet{clr@example}{blue}
+
+\definecolor{clr@remark}{HTML}{9D4EDD} % violet
+
+\colorlet{clr@proof}{black!30}   % grey
+
+\definecolor{clr@comment}{HTML}{2A9D8F}   % teal
+
+% -- Automatic margin control for \sidecomment notes ----------------------
+\newcommand{\marginSideNormal}{25mm}
+\newcommand{\marginSideRambling}{35mm}
+\newcommand{\marginNoteWidth}{25mm}
+\newcommand{\marginNoteSep}{5mm}
+\newcommand{\marginTopNormal}{25mm}
+\newcommand{\marginBottomNormal}{25mm}
+\iframbling
+	\geometry{
+		left=\marginSideRambling,
+		right=\marginSideRambling,
+		marginparwidth=\marginNoteWidth,
+		marginparsep=\marginNoteSep,
+		top=\marginTopNormal,
+		bottom=\marginBottomNormal,
+	}
 \else
+	\geometry{
+		left=\marginSideNormal,
+		right=\marginSideNormal,
+		marginparwidth=\marginNoteWidth,
+		marginparsep=\marginNoteSep,
+		top=\marginTopNormal,
+		bottom=\marginBottomNormal,
+	}
 \fi
 
-% Non-italic style, for definitions and remarks
-\ifdefined\defcolor
-\declaretheoremstyle[
-  headfont=\normalfont\bfseries,
-  bodyfont=\normalfont,
-  shaded={bgcolor=\defcolor}
-]{noital}
+% -- Shared box appearance (edit to restyle every box) --------------------
+% #1 is the environment colour; the background is a faint 8% tint of it.
+\newcommand{\thmboxsetup}[1]{%
+  linecolor=#1,%
+  linewidth=0.6pt,%
+  backgroundcolor=#1!8,%
+  roundcorner=2pt,%
+  innertopmargin=6pt,%
+  innerbottommargin=6pt,%
+  innerleftmargin=8pt,%
+  innerrightmargin=8pt,%
+  skipabove=8pt,%
+  skipbelow=8pt,%
+}
+
+% -- Helper: declare one boxed theorem style ------------------------------
+% \newthmboxstyle{<style name>}{<colour name>}{<body font>}
+% The mdframed option list is expanded (via \edef) before being handed to
+% thmtools, so the colour is baked in and mdframed sees a plain key=value list.
+\newcommand{\newthmboxstyle}[3]{%
+  \ifthmboxes
+    % boxed + coloured: bake the colour into the mdframed option list
+    \begingroup
+    \edef\thmbox@opts{\thmboxsetup{#2}}%
+    \expandafter\endgroup
+    \expandafter\newthmboxstyle@i\expandafter{\thmbox@opts}{#1}{#3}%
+  \else
+    % plain style: no box, no colour (matches the original look)
+    \declaretheoremstyle[
+      headfont=\normalfont\bfseries,
+      bodyfont=#3,
+    ]{#1}%
+  \fi
+}
+\newcommand{\newthmboxstyle@i}[3]{%
+  \declaretheoremstyle[
+    headfont=\normalfont\bfseries,
+    bodyfont=#3,
+    mdframed={#1},
+  ]{#2}%
+}
+
+% Theorem-like styles use an italic body; definition-like styles use upright.
+\newthmboxstyle{box-theorem}{clr@theorem}{\itshape}
+\newthmboxstyle{box-proposition}{clr@proposition}{\itshape}
+\newthmboxstyle{box-lemma}{clr@lemma}{\itshape}
+\newthmboxstyle{box-corollary}{clr@corollary}{\itshape}
+\newthmboxstyle{box-claim}{clr@claim}{\itshape}
+\newthmboxstyle{box-fact}{clr@fact}{\itshape}
+\newthmboxstyle{box-observation}{clr@observation}{\itshape}
+\newthmboxstyle{box-question}{clr@question}{\itshape}
+\newthmboxstyle{box-conjecture}{clr@conjecture}{\itshape}
+\newthmboxstyle{box-openproblem}{clr@openproblem}{\itshape}
+\newthmboxstyle{box-definition}{clr@definition}{\normalfont}
+\newthmboxstyle{box-construction}{clr@construction}{\normalfont}
+\newthmboxstyle{box-example}{clr@example}{\normalfont}
+\newthmboxstyle{box-remark}{clr@remark}{\normalfont}
+
+\makeatother
+
+\ifproofbar
+  \surroundwithmdframed[
+    topline=false,
+    bottomline=false,
+    rightline=false,
+    leftline=true,
+    linewidth=1.2pt,
+    linecolor=clr@proof,
+    innertopmargin=2pt,
+    innerbottommargin=2pt,
+    innerleftmargin=10pt,
+    innerrightmargin=0pt,
+    skipabove=6pt,
+    skipbelow=6pt,
+  ]{proof}
+\fi
+
+%% Informal rambling (for the informal, unpublished version of the paper)
+
+\newcommand{\sidecomment}[1]{%
+  \iframbling
+    \marginnote{\raggedright\footnotesize\sffamily\color{clr@comment}#1}%
+  \fi
+}
+
+\iframbling
+  \NewEnviron{rambling}{%
+    \begin{mdframed}[
+        linecolor=clr@comment,
+        backgroundcolor=clr@comment!8,
+        topline=false, bottomline=false, rightline=false, leftline=true,
+        linewidth=2pt,
+        roundcorner=0pt,
+        innertopmargin=5pt, innerbottommargin=5pt,
+        innerleftmargin=8pt, innerrightmargin=8pt,
+        skipabove=6pt, skipbelow=6pt,
+      ]%
+      \sffamily\small
+      \textcolor{clr@comment}{\bfseries Commentary.}\hspace{0.5em}%
+      \ignorespaces\BODY
+    \end{mdframed}%
+  }
 \else
-\declaretheoremstyle[
-  headfont=\normalfont\bfseries,
-  bodyfont=\normalfont,
-]{noital}
+  \NewEnviron{rambling}{}%  hide: capture the body and discard it
 \fi
 
 %% Theorem styles
 
 % Numbered versions
-\declaretheorem[style=plain,numberwithin=section,name=Theorem]{theorem}
-\declaretheorem[style=plain,sibling=theorem,name=Proposition]{proposition}
-\declaretheorem[style=plain,sibling=theorem,name=Lemma]{lemma}
-\declaretheorem[style=plain,sibling=theorem,name=Corollary]{corollary}
-\declaretheorem[style=plain,sibling=theorem,name=Conjecture]{conjecture}
-\declaretheorem[style=plain,sibling=theorem,name=Claim]{claim}
-\declaretheorem[style=plain,sibling=theorem,name=Fact]{fact}
-\declaretheorem[style=plain,sibling=theorem,name=Open Problem]{openproblem}
-\declaretheorem[style=plain,sibling=theorem,name=Question]{question}
-\declaretheorem[style=plain,sibling=theorem,name=Observation]{observation}
+\declaretheorem[style=box-theorem,numberwithin=section,name=Theorem]{theorem}
+\declaretheorem[style=box-proposition,sibling=theorem,name=Proposition]{proposition}
+\declaretheorem[style=box-lemma,sibling=theorem,name=Lemma]{lemma}
+\declaretheorem[style=box-corollary,sibling=theorem,name=Corollary]{corollary}
+\declaretheorem[style=box-conjecture,sibling=theorem,name=Conjecture]{conjecture}
+\declaretheorem[style=box-claim,sibling=theorem,name=Claim]{claim}
+\declaretheorem[style=box-fact,sibling=theorem,name=Fact]{fact}
+\declaretheorem[style=box-openproblem,sibling=theorem,name=Open Problem]{openproblem}
+\declaretheorem[style=box-question,sibling=theorem,name=Question]{question}
+\declaretheorem[style=box-observation,sibling=theorem,name=Observation]{observation}
 
 % Non-numbered versions
-\declaretheorem[style=plain,numbered=no,name=Theorem]{theorem-n}
-\declaretheorem[style=plain,numbered=no,name=Proposition]{proposition-n}
-\declaretheorem[style=plain,numbered=no,name=Lemma]{lemma-n}
-\declaretheorem[style=plain,numbered=no,name=Corollary]{corollary-n}
-\declaretheorem[style=plain,numbered=no,name=Conjecture]{conjecture-n}
-\declaretheorem[style=plain,numbered=no,name=Claim]{claim-n}
-\declaretheorem[style=plain,numbered=no,name=Fact]{fact-n}
-\declaretheorem[style=plain,numbered=no,name=Open Problem]{openproblem-n}
-\declaretheorem[style=plain,numbered=no,name=Question]{question-n}
-\declaretheorem[style=plain,numbered=no,name=Observation]{observation-n}
+\declaretheorem[style=box-theorem,numbered=no,name=Theorem]{theorem-n}
+\declaretheorem[style=box-proposition,numbered=no,name=Proposition]{proposition-n}
+\declaretheorem[style=box-lemma,numbered=no,name=Lemma]{lemma-n}
+\declaretheorem[style=box-corollary,numbered=no,name=Corollary]{corollary-n}
+\declaretheorem[style=box-conjecture,numbered=no,name=Conjecture]{conjecture-n}
+\declaretheorem[style=box-claim,numbered=no,name=Claim]{claim-n}
+\declaretheorem[style=box-fact,numbered=no,name=Fact]{fact-n}
+\declaretheorem[style=box-openproblem,numbered=no,name=Open Problem]{openproblem-n}
+\declaretheorem[style=box-question,numbered=no,name=Question]{question-n}
+\declaretheorem[style=box-observation,numbered=no,name=Observation]{observation-n}
 
 %% Definition styles
 
 % Numbered versions
-\declaretheorem[style=noital,sibling=theorem,name=Remark]{remark}
-\declaretheorem[style=noital,sibling=theorem,name=Definition]{definition}
-\declaretheorem[style=noital,sibling=theorem,name=Construction]{construction}
-\declaretheorem[style=noital,sibling=theorem,name=Example]{example}
+\declaretheorem[style=box-remark,sibling=theorem,name=Remark]{remark}
+\declaretheorem[style=box-definition,sibling=theorem,name=Definition]{definition}
+\declaretheorem[style=box-construction,sibling=theorem,name=Construction]{construction}
+\declaretheorem[style=box-example,sibling=theorem,name=Example]{example}
 
 % Non-numbered versions
-\declaretheorem[style=noital,numbered=no,name=Remark]{remark-n}
-\declaretheorem[style=noital,numbered=no,name=Definition]{definition-n}
-\declaretheorem[style=noital,numbered=no,name=Construction]{construction-n}
-\declaretheorem[style=noital,numbered=no,name=Example]{example-n}
+\declaretheorem[style=box-remark,numbered=no,name=Remark]{remark-n}
+\declaretheorem[style=box-definition,numbered=no,name=Definition]{definition-n}
+\declaretheorem[style=box-construction,numbered=no,name=Construction]{construction-n}
+\declaretheorem[style=box-example,numbered=no,name=Example]{example-n}
 
 %----------------------------------------------------------%
 
@@ -126,8 +280,6 @@
 
 % Parentheses (...)
 \DeclarePairedDelimiter{\p}{\lparen}{\rparen}
-\let\b\relax
-\DeclarePairedDelimiter{\b}{\lbrack}{\rbrack}
 
 % Such that
 \newcommand{\st}{\mathbin{\colon}}
@@ -146,17 +298,12 @@
 % Union and complement
 \newcommand{\union}{\mathbin{\cup}}
 \newcommand{\inter}{\mathbin{\cap}}
-\newcommand{\bigunion}{\mathbin{\bigcup}}
-\newcommand{\biginter}{\mathbin{\bigcap}}
 
 % Indicator function
 \DeclareMathOperator{\ind}{\mathbf{1}}
 
 % From (i.e. $f \from X \to Y$ gives "f : X -> Y")
 \newcommand{\from}{\colon}
-
-% Image
-\newcommand{\im}{\text{im}}
 
 % Floor and ceil
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
@@ -177,7 +324,6 @@
 %% Number theory
 
 % Hungarian chickens
-% (allegedly Erdos once claimed that the chickens in Hungary should be taught to say "log log log".)
 \DeclareMathOperator{\loglog}{log\,log}
 \DeclareMathOperator{\logloglog}{log\,log\,log}
 \DeclareMathOperator{\loglogloglog}{log\,log\,log\,log}
@@ -185,10 +331,6 @@
 % Divisibility
 \newcommand{\divides}{\mathrel{\mid}}
 \DeclareMathOperator{\eqmod}{\equiv}
-
-% Modular arithmetic
-\undef{\mod}
-\newcommand{\mod}[1]{\ (\mathrm{mod}\ #1)}
 
 %----------------------------------------------------------%
 
@@ -207,9 +349,6 @@
 % Inner Product
 \DeclarePairedDelimiterX{\inner}[2]
   {\langle}{\rangle}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
-
-\DeclarePairedDelimiterX{\absinner}[2]
-  {|\langle}{\rangle|}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
 
 % Embedding hook
 \DeclareMathOperator{\embeds}{\hookrightarrow}
@@ -283,7 +422,7 @@
 
 %% Font Shortcuts
 
-% Varepsilon is too common to have such a long name
+% Varepsilon is too common to have such a a long name
 \newcommand{\eps}{\varepsilon}
 % Likewise with Subseteq
 \newcommand{\sseq}{\subseteq}
@@ -437,19 +576,20 @@
 \newcommand{\bfell}{\boldsymbol{\ell}}
 
 \let\aa\relax
+\let\gg\relax
+\let\tt\relax
+\let\ll\relax
+\let\ss\relax
 \newcommand{\aa}{\alpha}
 \newcommand{\bb}{\beta}
+\newcommand{\gg}{\gamma}
 \newcommand{\dd}{\delta}
 \newcommand{\zz}{\zeta}
-\newcommand{\nn}{\eta}
-\let\tt\relax
+\newcommand{\hh}{\eta}
 \newcommand{\tt}{\theta}
 \newcommand{\kk}{\kappa}
-\let\ll\relax
 \newcommand{\ll}{\lambda}
-\let\ss\relax
 \newcommand{\ss}{\sigma}
-\newcommand{\phh}{\varphi}
 \newcommand{\ww}{\omega}
 
 \newcommand{\bfGamma}{\mathbf{\Gamma}}
@@ -497,5 +637,4 @@
 \newcommand{\bfone}{\mathbf{1}}
 
 %------------------------------------------------------------------------------%
-
 

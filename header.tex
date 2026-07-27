@@ -281,6 +281,10 @@
 % Parentheses (...)
 \DeclarePairedDelimiter{\p}{\lparen}{\rparen}
 
+% Brackets []...]
+\let\b\relax
+\DeclarePairedDelimiter{\b}{\lbrack}{\rbrack}
+
 % Such that
 \newcommand{\st}{\mathbin{\colon}}
 
@@ -298,12 +302,17 @@
 % Union and complement
 \newcommand{\union}{\mathbin{\cup}}
 \newcommand{\inter}{\mathbin{\cap}}
+\newcommand{\bigunion}{\mathbin{\bigcup}}
+\newcommand{\biginter}{\mathbin{\bigcap}}
 
 % Indicator function
 \DeclareMathOperator{\ind}{\mathbf{1}}
 
 % From (i.e. $f \from X \to Y$ gives "f : X -> Y")
 \newcommand{\from}{\colon}
+
+% Image
+\newcommand{\im}{\text{im}}
 
 % Floor and ceil
 \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
@@ -324,6 +333,7 @@
 %% Number theory
 
 % Hungarian chickens
+% (allegedly Erdos once claimed that the chickens in Hungary should be taught to say "log log log".)
 \DeclareMathOperator{\loglog}{log\,log}
 \DeclareMathOperator{\logloglog}{log\,log\,log}
 \DeclareMathOperator{\loglogloglog}{log\,log\,log\,log}
@@ -331,6 +341,10 @@
 % Divisibility
 \newcommand{\divides}{\mathrel{\mid}}
 \DeclareMathOperator{\eqmod}{\equiv}
+
+% Modular arithmetic
+\undef{\mod}
+\newcommand{\mod}[1]{\ (\mathrm{mod}\ #1)}
 
 %----------------------------------------------------------%
 
@@ -349,6 +363,10 @@
 % Inner Product
 \DeclarePairedDelimiterX{\inner}[2]
   {\langle}{\rangle}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
+
+\DeclarePairedDelimiterX{\absinner}[2]
+  {|\langle}{\rangle|}{\ifblank{#1}{\,\cdot\,}{#1},\ifblank{#2}{\,\cdot\,}{#2}}
+
 
 % Embedding hook
 \DeclareMathOperator{\embeds}{\hookrightarrow}
@@ -422,7 +440,7 @@
 
 %% Font Shortcuts
 
-% Varepsilon is too common to have such a a long name
+% Varepsilon is too common to have such a long name
 \newcommand{\eps}{\varepsilon}
 % Likewise with Subseteq
 \newcommand{\sseq}{\subseteq}

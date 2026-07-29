@@ -167,6 +167,21 @@
   ]{#2}%
 }
 
+
+\newcommand{\newthmhiddenstyle}[5]{%
+  \ifthmboxes
+    % boxed + coloured: bake the colour into the mdframed option list
+    \begingroup
+    \edef\thmbox@opts{\thmboxsetup{#2}}%
+    \expandafter\endgroup
+    \expandafter\newthmboxstyle@i\expandafter{\thmbox@opts}{#1}{#3}%
+    \declaretheorem[style=#1,numbered=no,name=#5]{#4}%
+  \else
+    % completely invisible: no style, no list, no spacing -- just the body
+    \NewEnviron{#4}{{#3\ignorespaces\BODY}}%
+  \fi
+}
+
 % Theorem-like styles use an italic body; definition-like styles use upright.
 \newthmboxstyle{box-theorem}{clr@theorem}{\itshape}
 \newthmboxstyle{box-proposition}{clr@proposition}{\itshape}
@@ -265,11 +280,12 @@
 \declaretheorem[style=box-construction,sibling=theorem,name=Construction]{construction}
 \declaretheorem[style=box-example,sibling=theorem,name=Example]{example}
 
-% Non-numbered versions
-\declaretheorem[style=box-remark,numbered=no,name=Remark]{remark-n}
-\declaretheorem[style=box-definition,numbered=no,name=Definition]{definition-n}
-\declaretheorem[style=box-construction,numbered=no,name=Construction]{construction-n}
-\declaretheorem[style=box-example,numbered=no,name=Example]{example-n}
+% Non-numbered versions (these are built differently)
+
+\newthmhiddenstyle{hidden-remark}{clr@remark}{\normalfont}{remark-n}{Remark}
+\newthmhiddenstyle{hidden-definition}{clr@definition}{\normalfont}{definition-n}{Definition}
+\newthmhiddenstyle{hidden-construction}{clr@construction}{\normalfont}{construction-n}{Construction}
+\newthmhiddenstyle{hidden-example}{clr@example}{\normalfont}{example-n}{Example}
 
 %----------------------------------------------------------%
 
@@ -655,4 +671,3 @@
 \newcommand{\bfone}{\mathbf{1}}
 
 %------------------------------------------------------------------------------%
-

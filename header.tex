@@ -100,16 +100,17 @@
 \definecolor{clr@comment}{HTML}{2A9D8F}   % teal
 
 % -- Automatic margin control for \sidecomment notes ----------------------
-\newcommand{\marginSideNormal}{25mm}
-\newcommand{\marginSideRambling}{45mm}
+\newcommand{\marginSideNormal}{30mm}
+\newcommand{\marginSideLeftRambling}{25mm}
+\newcommand{\marginSideRightRambling}{45mm}
 \newcommand{\marginNoteWidth}{35mm}
 \newcommand{\marginNoteSep}{5mm}
 \newcommand{\marginTopNormal}{25mm}
 \newcommand{\marginBottomNormal}{25mm}
 \iframbling
 	\geometry{
-		left=\marginSideNormal,
-		right=\marginSideRambling,
+		left=\marginSideLeftRambling,
+		right=\marginSideRightRambling,
 		marginparwidth=\marginNoteWidth,
 		marginparsep=\marginNoteSep,
 		top=\marginTopNormal,
@@ -220,6 +221,15 @@
 
 %% Informal rambling (for the informal, unpublished version of the paper)
 
+% Usage: \begin{commentfigure}[htbp] ... \end{commentfigure}
+% When hidden, discard the contents without executing them or creating a float.
+\NewEnviron{commentfigure}[1][htbp]{%
+  \ifbool{rambling}{%
+    \begin{figure}[#1]%
+      \BODY
+    \end{figure}%
+  }{}%
+}
 \newcommand{\sidecomment}[1]{%
   \iframbling
     \marginnote{\raggedright\footnotesize\sffamily\color{clr@comment}#1}%

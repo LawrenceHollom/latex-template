@@ -46,6 +46,8 @@
   This is a paper which proves some cool stuff.
 \end{abstract}
 
+\sidecomment{This is a sidecomment. Toggle with the \texttt{marginalia} command in \texttt{header.tex}}
+
 %----------------------------------------------------------%
 
 \section{Introduction}
@@ -53,6 +55,16 @@
 
 Paper goes here.
 We can cite things \cite{Euc00}.
+\lhc{This is a comment.}
+There is also a command to indicate that \lh{something (important) has been changed}.
+
+\begin{theorem}
+	Very important theorem. Boxes can be toggled with the \texttt{ifthmboxes} boolean in \texttt{header.tex} (approx.\ line 70)
+\end{theorem}
+
+\begin{proof}
+	\textit{Quod erat demonstrandum.} Proofs have side-bars, which can be toggled with the \texttt{ifproofbar} boolean in \texttt{header.tex} (approx.\ line 70)
+\end{proof}
 
 %----------------------------------------------------------%
 

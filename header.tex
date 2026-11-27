@@ -62,7 +62,7 @@
 
 \makeatletter
 
-% TOGGLES for boxes, proof bars, and rambling
+% TOGGLES for boxes, proof bars, and "marginalia" (various notes and ramblings)
 
 \newif\ifthmboxes
 \thmboxestrue
@@ -72,9 +72,9 @@
 \proofbartrue
 % \proofbarfalse
 
-\newif\iframbling
-\ramblingtrue
-% \ramblingfalse
+\newif\ifmarginalia
+\marginaliatrue
+% \marginaliafalse
 
 \colorlet{clr@theorem}{red}
 \colorlet{clr@proposition}{red}
@@ -101,16 +101,16 @@
 
 % -- Automatic margin control for \sidecomment notes ----------------------
 \newcommand{\marginSideNormal}{30mm}
-\newcommand{\marginSideLeftRambling}{25mm}
-\newcommand{\marginSideRightRambling}{45mm}
+\newcommand{\marginSideLeftMarginalia}{25mm}
+\newcommand{\marginSideRightMarginalia}{45mm}
 \newcommand{\marginNoteWidth}{35mm}
 \newcommand{\marginNoteSep}{5mm}
 \newcommand{\marginTopNormal}{25mm}
 \newcommand{\marginBottomNormal}{25mm}
-\iframbling
+\ifmarginalia
 	\geometry{
-		left=\marginSideLeftRambling,
-		right=\marginSideRightRambling,
+		left=\marginSideLeftMarginalia,
+		right=\marginSideRightMarginalia,
 		marginparwidth=\marginNoteWidth,
 		marginparsep=\marginNoteSep,
 		top=\marginTopNormal,
@@ -219,25 +219,25 @@
   ]{proof}
 \fi
 
-%% Informal rambling (for the informal, unpublished version of the paper)
+%% Informal marginalia (for the informal, unpublished version of the paper)
 
 % Usage: \begin{commentfigure}[htbp] ... \end{commentfigure}
 % When hidden, discard the contents without executing them or creating a float.
 \NewEnviron{commentfigure}[1][htbp]{%
-  \ifbool{rambling}{%
+  \ifbool{marginalia}{%
     \begin{figure}[#1]%
       \BODY
     \end{figure}%
   }{}%
 }
 \newcommand{\sidecomment}[1]{%
-  \iframbling
+  \ifmarginalia
     \marginnote{\raggedright\footnotesize\sffamily\color{clr@comment}#1}%
   \fi
 }
 
-\iframbling
-  \NewEnviron{rambling}{%
+\ifmarginalia
+  \NewEnviron{marginalia}{%
     \begin{mdframed}[
         linecolor=clr@comment,
         backgroundcolor=clr@comment!8,
@@ -254,7 +254,7 @@
     \end{mdframed}%
   }
 \else
-  \NewEnviron{rambling}{}%  hide: capture the body and discard it
+  \NewEnviron{marginalia}{}%  hide: capture the body and discard it
 \fi
 
 %% Theorem styles
